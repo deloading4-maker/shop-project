@@ -129,3 +129,9 @@ app.post("/login", (req, res) => {
     res.status(401).json({ success: false });
   }
 });
+
+const mongoose = require("mongoose");
+
+mongoose.connect("mongodb://<deloading4_db_user>:<howlor123>@ac-shqaeqr-shard-00-00.yelzxdr.mongodb.net:27017,ac-shqaeqr-shard-00-01.yelzxdr.mongodb.net:27017,ac-shqaeqr-shard-00-02.yelzxdr.mongodb.net:27017/?ssl=true&replicaSet=atlas-iz2que-shard-0&authSource=admin&appName=Cluster0")
+  .then(() => console.log("MongoDB подключен"))
+  .catch(err => console.log(err));
