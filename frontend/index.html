@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Магазин</title>
+</head>
+
+<body>
+
+<h1>🛍️ Магазин</h1>
+
+<select id="product">
+  <option value="HOODIE|8900">HOODIE - 8900</option>
+  <option value="JERSEY|5500">JERSEY - 5500</option>
+</select>
+
+<button onclick="addToCart()">Добавить в корзину</button>
+
+<h2>🛒 Корзина</h2>
+<div id="cart"></div>
+
+<button onclick="checkout()">Оформить заказ</button>
+
+<script>
+let cart = [];
+
+function addToCart() {
+  const value = document.getElementById("product").value;
+  const [name, price] = value.split("|");
+
+  cart.push({ name, price });
+
+  renderCart();
+}
+
+function renderCart() {
+  const cartDiv = document.getElementById("cart");
+  cartDiv.innerHTML = "";
+
+  cart.forEach(item => {
+    cartDiv.innerHTML += "<div>" + item.name + " - " + item.price + " руб</div>";
+  });
+}
+
+function checkout() {
+  cart.forEach(item => {
+    fetch("http://localhost:3001/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(item)
+    });
+  });
+
+  cart = [];
+  renderCart();
+
+  alert("Заказ оформлен 🔥");
+}
+</script>
+
+</body>
+</html>

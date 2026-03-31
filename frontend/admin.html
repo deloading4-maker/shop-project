@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>ADMIN</title>
+</head>
+
+<body style="background:black; color:#00ff88; font-family:Arial;">
+
+<h1>Добавить товар 💀</h1>
+
+<input id="name" placeholder="Название">
+
+<input id="price" placeholder="Цена">
+
+<input id="img" placeholder="Путь к фото (img/hoodie.jpg)">
+
+<button onclick="addProduct()">Добавить</button>
+
+<script>
+function addProduct() {
+  const name = document.getElementById("name").value;
+  const price = Number(document.getElementById("price").value);
+  const img = document.getElementById("img").value;
+  const description = document.getElementById("desc").value;
+
+  fetch("http://localhost:3001/add-product", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, price, img, description })
+  })
+  .then(res => res.json())
+  .then(() => {
+    alert("Товар добавлен 🔥");
+  });
+}
+</script>
+
+</body>
+</html>
+
+<input id="desc" placeholder="Описание">
+
+<h1>🔐 Вход</h1>
+
+<input id="login" placeholder="логин" />
+<input id="password" placeholder="пароль" />
+
+<button onclick="login()">Войти</button>
+
+<div id="panel" style="display:none;">
+  <h2>📦 Заказы</h2>
+  <button onclick="loadOrders()">Загрузить</button>
+  <div id="list"></div>
+</div>
+
+<script>
+function login() {
+  const login = document.getElementById("login").value;
+  const password = document.getElementById("password").value;
+
+  fetch("http://localhost:3001/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ login, password })
+  })
+  .then(res => {
+    if (!res.ok) throw new Error();
+    return res.json();
+  })
+  .then(() => {
+    document.getElementById("panel").style.display = "block";
+  })
+  .catch(() => alert("Неверно"));
+}
+
+function loadOrders() {
+  fetch("http://localhost:3001/orders")
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById("list");
+      list.innerHTML = "";
+
+      data.forEach(order => {
+        const div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+          <input id="name-${order._id}" value="${order.name}" />
+          <input id="price-${order._id}" value="${order.price}" />
+
+          <button onclick="updateOrder('${order._id}')">💾</button>
+          <button onclick="deleteOrder('${order._id}')">❌</button>
+        `;
+
+        list.appendChild(div);
+      });
+    });
+}
+
+function deleteOrder(id) {
+  fetch("http://localhost:3001/order/" + id, {
+    method: "DELETE"
+  }).then(() => loadOrders());
+}
+
+function updateOrder(id) {
+  const name = document.getElementById("name-" + id).value;
+  const price = document.getElementById("price-" + id).value;
+
+  fetch("http://localhost:3001/order/" + id, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, price })
+  }).then(() => loadOrders());
+}
+</script>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>PRODUCT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="product"></div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+.then(products => {
+  const p = products.find(item => item._id === id);
+  currentProduct = p;
+
+  document.getElementById("product-name").innerText = p.name;
+  document.getElementById("product-desc").innerText = p.description;
+  document.getElementById("product-price").innerText = p.price + " руб";
+
+  const mainImg = document.getElementById("main-img");
+  const thumbs = document.getElementById("thumbs");
+
+  if (p.images && p.images.length > 0) {
+    mainImg.src = p.images[0];
+
+    p.images.forEach(img => {
+      thumbs.innerHTML += `
+        <img src="${img}" onclick="changeImg('${img}')">
+      `;
+    });
+  } else {
+    mainImg.src = p.img;
+    function changeImg(src) {
+  document.getElementById("main-img").src = src;
+ }
+});
+
+let cart = [];
+
+function addToCart(name, price) {
+  cart.push({ name, price });
+  alert("Добавлено в корзину 🔥");
+}
+</script>
+
+</body>
+<div class="product-page">
+  <div class="product-left">
+    <div class="gallery">
+  <img id="main-img">
+  <div id="thumbs"></div>
+</div>
+  </div>
+
+  <div class="product-right">
+    <h1 id="product-name"></h1>
+    <p id="product-desc"></p>
+    <h2 id="product-price"></h2>
+
+    <div class="gallery">
+  <img id="main-img">
+  <div id="thumbs"></div>
+</div>
+
+    <div class="sizes">
+  <button onclick="selectSize('S')">S</button>
+  <button onclick="selectSize('M')">M</button>
+  <button onclick="selectSize('L')">L</button>
+</div>
+let selectedSize = null;
+
+function selectSize(size) {
+  selectedSize = size;
+  alert("Выбран размер: " + size);
+}
+<button class="buy-btn" onclick="addToCart()">Купить</button>
+  </div>
+</div>
+</html>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+let currentProduct = null;
+
+fetch("http://localhost:3001/products")
+  .then(res => res.json())
+  .then(products => {
+    const p = products.find(item => item._id === id);
+    currentProduct = p;
+
+    document.getElementById("product-img").src = p.img;
+    document.getElementById("product-name").innerText = p.name;
+    document.getElementById("product-desc").innerText = p.description;
+    document.getElementById("product-price").innerText = p.price + " руб";
+  });
+
+function addToCart() {
+  alert("Добавлено 🔥");
+}
+</script>
