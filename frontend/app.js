@@ -241,3 +241,17 @@ app.get("/add-products", async (req, res) => {
 
   res.send("products added");
 });
+
+app.post("/login", (req, res) => {
+  const { login, password } = req.body;
+
+  if (login === "admin" && password === "123") {
+    res.json({ success: true });
+  } else {
+    res.status(401).json({ success: false });
+  }
+});
+
+app.get("/", (req, res) => {
+  res.send("API WORKING");
+});
