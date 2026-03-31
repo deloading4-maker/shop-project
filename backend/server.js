@@ -41,3 +41,5 @@ const mongoose = require("mongoose");
 mongoose.connect("mongodb+srv://deloading4_db_user:howlor123@cluster0.yelzxdr.mongodb.net/?appName=Cluster0")
   .then(() => console.log("MongoDB подключен"))
   .catch(err => console.log(err));
+
+  console.log("test deploy");
