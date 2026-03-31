@@ -13,3 +13,11 @@
     "mongoose": "^5.13.23"
   }
 }
+
+{
+  "name": "shop-project",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npx serve frontend"
+  }
+}
