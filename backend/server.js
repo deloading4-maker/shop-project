@@ -1,18 +1,21 @@
-const mongoose = require("mongoose");
 const express = require("express");
-const cors = require("cors");
+const mongoose = require("mongoose");
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log(err));
 
-mongoose.connect("mongodb://127.0.0.1:27017/clothing")
-  .then(() => console.log("DB CONNECTED 🔥"))
-  .catch(err => {
-    console.log("DB ERROR ❌");
-    console.log(err);
-  });
+app.get("/", (req, res) => {
+  res.send("API работает");
+});
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
+});
 
 // модель заказа
 const Order = mongoose.model("Order", {
@@ -132,6 +135,6 @@ app.post("/login", (req, res) => {
 
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://<deloading4_db_user>:<howlor123>@ac-shqaeqr-shard-00-00.yelzxdr.mongodb.net:27017,ac-shqaeqr-shard-00-01.yelzxdr.mongodb.net:27017,ac-shqaeqr-shard-00-02.yelzxdr.mongodb.net:27017/?ssl=true&replicaSet=atlas-iz2que-shard-0&authSource=admin&appName=Cluster0")
+mongoose.connect("mongodb+srv://deloading4_db_user:howlor123@cluster0.yelzxdr.mongodb.net/?appName=Cluster0")
   .then(() => console.log("MongoDB подключен"))
   .catch(err => console.log(err));
